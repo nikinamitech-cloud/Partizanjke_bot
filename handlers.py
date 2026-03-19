@@ -8,7 +8,7 @@ from telegram import Update
 from telegram.ext import ContextTypes
 
 import claude_client
-from config import ALLOWED_USER_ID
+from config import ALLOWED_USER_IDS
 from formatters import split_message
 
 logger = logging.getLogger(__name__)
@@ -21,7 +21,7 @@ async def _keep_typing(bot, chat_id: int, stop_event: asyncio.Event) -> None:
 
 
 async def handle_start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
-    if update.effective_user.id != ALLOWED_USER_ID:
+    if update.effective_user.id not in ALLOWED_USER_IDS:
         return
 
     claude_client.reset_history()
@@ -37,7 +37,7 @@ async def handle_start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> No
 
 
 async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
-    if update.effective_user.id != ALLOWED_USER_ID:
+    if update.effective_user.id not in ALLOWED_USER_IDS:
         logger.warning(f"Отклонён запрос от user_id={update.effective_user.id}")
         return
 

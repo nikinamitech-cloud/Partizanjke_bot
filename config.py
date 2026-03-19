@@ -13,7 +13,10 @@ def _require(key: str) -> str:
 TELEGRAM_TOKEN: str = _require("TELEGRAM_TOKEN")
 OPENAI_API_KEY: str = _require("OPENAI_API_KEY")
 GOOGLE_SHEET_ID: str = _require("GOOGLE_SHEET_ID")
-ALLOWED_USER_ID: int = int(_require("ALLOWED_USER_ID"))
+ALLOWED_USER_IDS: set[int] = {
+    int(uid.strip())
+    for uid in _require("ALLOWED_USER_IDS").split(",")
+}
 CREDENTIALS_FILE: str = os.getenv("CREDENTIALS_FILE", "credentials.json")
 
 MOSCOW_TZ = "Europe/Moscow"

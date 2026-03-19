@@ -10,7 +10,7 @@ from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from telegram import Bot
 from telegram.ext import Application
 
-from config import ALLOWED_USER_ID, DIGEST_HOUR, DIGEST_MINUTE, MOSCOW_TZ
+from config import ALLOWED_USER_IDS, DIGEST_HOUR, DIGEST_MINUTE, MOSCOW_TZ
 from digest import build_digest
 
 logger = logging.getLogger(__name__)
@@ -23,8 +23,9 @@ async def send_daily_digest(bot: Bot) -> None:
     logger.info("Отправка утреннего дайджеста...")
     try:
         parts = build_digest()
-        for part in parts:
-            await bot.send_message(chat_id=ALLOWED_USER_ID, text=part)
+        for user_id in ALLOWED_USER_IDS:
+            for part in parts:
+                await bot.send_message(chat_id=user_id, text=part)
         logger.info("Дайджест отправлен успешно.")
     except Exception as e:
         logger.exception(f"Ошибка при отправке дайджеста: {e}")
