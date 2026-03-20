@@ -64,6 +64,7 @@ def get_all_rows() -> list[dict]:
 
     ws = _get_worksheet()
     rows = ws.get_all_records(value_render_option="UNFORMATTED_VALUE")
+    rows = [{k.strip(): v for k, v in row.items()} for row in rows]
     _cache = rows
     _cache_time = now
     return rows
